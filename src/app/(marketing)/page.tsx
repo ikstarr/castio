@@ -62,7 +62,7 @@ const NOT_JUST = [
 const FAQS = [
   {
     q: "Do I need to connect Instagram, TikTok or X?",
-    a: "No. Castio is manual-first. You add or paste proof yourself, so you're never blocked waiting on a platform integration or approval.",
+    a: "No. You add or paste proof yourself from the places your customers already speak, so you're never blocked waiting on a platform integration or approval.",
   },
   {
     q: "How is this different from a social feed widget?",
@@ -137,7 +137,7 @@ export default function HomePage() {
             </Link>
           </div>
           <ul className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-white/55">
-            {["No credit card", "No social logins", "Live in 5 minutes"].map(
+            {["No credit card", "No account connections required", "Live in 5 minutes"].map(
               (t) => (
                 <li key={t} className="flex items-center gap-1.5">
                   <span className="text-accent" aria-hidden>
@@ -203,7 +203,7 @@ export default function HomePage() {
             center
             eyebrow="Proof sources"
             title="Turn proof from anywhere into a wall"
-            subtitle="Castio is manual-first. Add, paste or organise proof from the places your customers already speak — no account connections required."
+            subtitle="Paste, organise and display proof from the places your customers already speak — no account connections required."
           />
           <div className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-2.5">
             {PROOF_SOURCES.map((src) => (

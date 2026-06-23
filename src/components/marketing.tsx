@@ -129,7 +129,11 @@ export function Prose({
   );
 }
 
-const CTA_TRUST = ["No credit card", "No social logins", "Live in 5 minutes"];
+const CTA_TRUST = [
+  "No credit card",
+  "No account connections required",
+  "Live in 5 minutes",
+];
 const CTA_METRICS = [
   ["13", "proof types"],
   ["2", "layouts live"],

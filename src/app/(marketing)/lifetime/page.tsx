@@ -83,7 +83,7 @@ export default function LifetimePage() {
           {[
             ["14-day money-back", "Try it risk-free. Full refund within 14 days."],
             ["Founder-operated", `Built and supported by ${BRAND.operator}.`],
-            ["No card data stored", "Manual-first. No social logins or scraping."],
+            ["No card data stored", "Add proof yourself. No account connections or scraping."],
           ].map(([title, body]) => (
             <div
               key={title}
