@@ -293,28 +293,77 @@ export const FOOTER_LINKS = {
   Product: [
     { href: "/pricing", label: "Pricing" },
     { href: "/lifetime", label: "Lifetime deal" },
-    { href: "/demo", label: "Live demo" },
+    { href: "/demo", label: "Demo" },
     { href: "/roadmap", label: "Roadmap" },
   ],
-  Compare: [
-    { href: "/curator-io-alternative", label: "Curator.io alternative" },
-    { href: "/best-testimonial-wall-tools", label: "Testimonial wall tools" },
-    { href: "/best-ugc-wall-tools", label: "UGC wall tools" },
-    { href: "/wall-of-love-software", label: "Wall of love software" },
-  ],
   Resources: [
-    { href: "/help", label: "Help center" },
     { href: "/blog", label: "Blog" },
-    { href: "/social-proof-widget-for-websites", label: "Social proof widgets" },
-    {
-      href: "/how-to-add-social-proof-to-a-landing-page",
-      label: "Add proof to a landing page",
-    },
+    { href: "/help", label: "Help center" },
+    { href: "/support", label: "Support" },
   ],
   Company: [
-    { href: "/support", label: "Support" },
     { href: "/privacy", label: "Privacy" },
     { href: "/terms", label: "Terms" },
     { href: "/refund-policy", label: "Refund policy" },
   ],
 };
+
+/**
+ * Proof sources a user can turn into a wall. Castio is manual-first — these are
+ * places customers speak, not automated network integrations.
+ */
+export const PROOF_SOURCES = [
+  "Testimonials",
+  "Reviews",
+  "Instagram",
+  "TikTok",
+  "LinkedIn",
+  "X / Twitter",
+  "YouTube",
+  "Facebook",
+  "Reddit",
+  "Google Reviews",
+  "G2",
+  "Trustpilot",
+  "Screenshots",
+  "Customer emails",
+  "UGC",
+  "Founder updates",
+];
+
+/** Honest category badges (no fabricated customer logos). */
+export const USE_CASE_BADGES = [
+  "SaaS founders",
+  "Ecommerce brands",
+  "Agencies",
+  "Course creators",
+  "Coaches & consultants",
+  "App launches",
+  "Product pages",
+  "Pricing pages",
+];
+
+/** Homepage "News and stories" — links to existing SEO/blog content. */
+export const HOME_ARTICLES = [
+  {
+    href: "/how-to-add-social-proof-to-a-landing-page",
+    title: "How to turn testimonials into a website proof wall",
+    excerpt:
+      "Collect, curate and embed your best testimonials where they lift conversions.",
+    tag: "Guide",
+  },
+  {
+    href: "/best-social-proof-widgets",
+    title: "Social proof wall vs social feed widget",
+    excerpt:
+      "Why a curated proof wall converts better than a raw, auto-updating feed.",
+    tag: "Comparison",
+  },
+  {
+    href: "/curator-io-alternative",
+    title: "Curator.io alternative: proof walls built for conversion",
+    excerpt:
+      "Move from mirroring a social feed to curating proof that helps visitors buy.",
+    tag: "Playbook",
+  },
+];
