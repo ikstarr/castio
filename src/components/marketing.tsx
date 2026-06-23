@@ -1,7 +1,84 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui";
+import { WHAT_YOU_BUILD, type PlanFeature } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+
+/** Renders a plan's feature list. `hi` = on a dark (highlighted) tier card.
+ * Items flagged `soon` get a muted marker + "Soon" badge so we never claim a
+ * feature that isn't built yet. */
+export function TierFeatures({
+  features,
+  hi = false,
+}: {
+  features: PlanFeature[];
+  hi?: boolean;
+}) {
+  return (
+    <ul className="mt-6 flex-1 space-y-3 text-sm">
+      {features.map((f) => (
+        <li key={f.text} className="flex items-start gap-2.5">
+          <span
+            aria-hidden
+            className={
+              hi
+                ? f.soon
+                  ? "mt-0.5 text-white/40"
+                  : "mt-0.5 text-accent"
+                : f.soon
+                  ? "mt-0.5 text-muted/50"
+                  : "mt-0.5 text-brand"
+            }
+          >
+            {f.soon ? "○" : "✓"}
+          </span>
+          <span
+            className={
+              hi
+                ? f.soon
+                  ? "text-white/55"
+                  : "text-white/90"
+                : f.soon
+                  ? "text-muted"
+                  : undefined
+            }
+          >
+            {f.text}
+            {f.soon ? (
+              <span
+                className={cn(
+                  "ml-2 inline-block rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide",
+                  hi ? "bg-white/10 text-white/70" : "bg-surface-muted text-muted",
+                )}
+              >
+                Soon
+              </span>
+            ) : null}
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Offer-clarity strip: spells out exactly what Castio produces. */
+export function WhatYouBuild() {
+  return (
+    <div className="mx-auto max-w-4xl rounded-2xl border border-border bg-surface p-6 text-center">
+      <p className="cx-eyebrow is-center mb-3 justify-center">What you build with Castio</p>
+      <div className="flex flex-wrap justify-center gap-2">
+        {WHAT_YOU_BUILD.map((x) => (
+          <span
+            key={x}
+            className="rounded-full border border-border bg-background px-3.5 py-1.5 text-xs font-medium text-muted"
+          >
+            {x}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function PageHeader({
   eyebrow,

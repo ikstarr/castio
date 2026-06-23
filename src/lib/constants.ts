@@ -96,118 +96,190 @@ export const ACCENT_PRESETS = [
   "#0d0d12",
 ];
 
-/** Monthly pricing (static for MVP — billing is not live). */
-export const PRICING_TIERS = [
+/** A single feature line on a plan. `soon` marks an item that is on the
+ * roadmap but not yet built — rendered as "Soon" so we never over-promise. */
+export type PlanFeature = { text: string; soon?: boolean };
+
+/** What Castio actually produces — used for offer clarity on pricing pages. */
+export const WHAT_YOU_BUILD = [
+  "Website proof walls",
+  "Testimonial walls",
+  "Review walls",
+  "UGC proof walls",
+  "Social proof walls",
+  "Launch proof walls",
+  "Embeddable proof sections for homepages, product pages and pricing pages",
+];
+
+/**
+ * Monthly pricing (static positioning for MVP — billing is not live).
+ * Castio is positioned as a higher-value proof + conversion platform, not a
+ * cheap feed widget.
+ */
+export const PRICING_TIERS: {
+  name: string;
+  price: string;
+  cadence: string;
+  blurb: string;
+  features: PlanFeature[];
+  cta: string;
+  highlight: boolean;
+}[] = [
   {
-    name: "Starter",
+    name: "Free Sandbox",
     price: "$0",
-    cadence: "free to start",
-    blurb: "Launch your first proof wall and embed it anywhere.",
+    cadence: "for testing",
+    blurb: "Kick the tires and build one proof wall with strict limits.",
     features: [
-      "1 workspace",
-      "1 proof wall",
-      "Up to 25 proof cards",
-      "Grid + compact list layouts",
-      "Iframe embed",
-      "Castio branding",
+      { text: "1 website" },
+      { text: "1 proof wall" },
+      { text: "25 proof cards" },
+      { text: "Grid + compact list layouts" },
+      { text: "Basic embed" },
+      { text: "Castio branding" },
     ],
     cta: "Start free",
     highlight: false,
   },
   {
-    name: "Growth",
-    price: "$19",
+    name: "Launch",
+    price: "$49",
     cadence: "per month",
-    blurb: "For founders and marketers turning proof into conversions.",
+    blurb:
+      "For founders and small brands turning scattered proof into one polished website proof wall.",
     features: [
-      "3 workspaces",
-      "10 proof walls",
-      "Up to 1,000 proof cards",
-      "Remove Castio branding",
-      "Custom accent + themes",
-      "CTA links on cards",
-      "Wall + CTA analytics",
+      { text: "1 website" },
+      { text: "3 proof walls" },
+      { text: "250 proof cards" },
+      { text: "Core embed" },
+      { text: "Custom theme & accent" },
+      { text: "Basic analytics" },
+      { text: "Email support" },
+      { text: "Castio branding" },
+    ],
+    cta: "Start Launch",
+    highlight: false,
+  },
+  {
+    name: "Growth",
+    price: "$99",
+    cadence: "per month",
+    blurb:
+      "For SaaS, ecommerce, creator and service brands running proof on homepages, pricing, product and launch pages.",
+    features: [
+      { text: "3 websites" },
+      { text: "10 proof walls" },
+      { text: "1,500 proof cards" },
+      { text: "Remove Castio branding" },
+      { text: "Custom themes & styling controls" },
+      { text: "Wall, card & CTA analytics" },
+      { text: "Templates", soon: true },
+      { text: "Priority support" },
     ],
     cta: "Start Growth",
     highlight: true,
   },
   {
     name: "Agency",
-    price: "$49",
+    price: "$249",
     cadence: "per month",
-    blurb: "For agencies and teams managing proof for many clients.",
+    blurb: "For agencies, studios and multi-brand operators.",
     features: [
-      "10 workspaces",
-      "Unlimited proof walls",
-      "Up to 5,000 proof cards",
-      "Client / multi-site use",
-      "Custom CSS",
-      "Priority support",
-      "Early access to integrations",
+      { text: "10 websites" },
+      { text: "30 proof walls" },
+      { text: "7,500 proof cards" },
+      { text: "Client / multi-brand use" },
+      { text: "Remove Castio branding" },
+      { text: "Priority support" },
+      { text: "Custom CSS", soon: true },
+      { text: "Advanced analytics", soon: true },
     ],
     cta: "Start Agency",
     highlight: false,
   },
 ];
 
-/** Lifetime deal tiers. */
-export const LIFETIME_TIERS = [
+/** Enterprise is a contact-us band, not a self-serve tier. */
+export const PRICING_ENTERPRISE = {
+  name: "Enterprise",
+  price: "Custom",
+  blurb:
+    "For high-volume proof systems, managed support and custom requirements.",
+  cta: "Contact us",
+  href: "/support",
+};
+
+/** Lifetime deal tiers — priced so each tier is strictly higher than the last. */
+export const LIFETIME_TIERS: {
+  name: string;
+  tier: string;
+  price: string;
+  cadence: string;
+  blurb: string;
+  features: PlanFeature[];
+  highlight: boolean;
+}[] = [
   {
-    name: "Tier 1",
-    price: "$79",
+    name: "Launch Proof",
+    tier: "Tier 1",
+    price: "$179",
     cadence: "one-time",
-    blurb: "Everything you need to ship your first proof wall.",
+    blurb: "Ship your first polished website proof wall.",
     features: [
-      "1 website",
-      "3 proof walls",
-      "150 proof cards",
-      "10,000 wall views / month",
-      "Castio branding",
-      "Core embed",
-      "Manual proof cards",
-      "Basic analytics",
+      { text: "1 website" },
+      { text: "3 proof walls" },
+      { text: "250 proof cards" },
+      { text: "Basic embed" },
+      { text: "Founder update proof type" },
+      { text: "Castio branding" },
     ],
     highlight: false,
   },
   {
-    name: "Tier 2",
-    price: "$149",
+    name: "Growth Proof",
+    tier: "Tier 2",
+    price: "$349",
     cadence: "one-time",
-    blurb: "For growing brands that want branded, custom walls.",
+    blurb: "For brands putting proof on every key page.",
     features: [
-      "3 websites",
-      "10 proof walls",
-      "1,000 proof cards",
-      "50,000 wall views / month",
-      "Remove Castio branding",
-      "Custom themes",
-      "CTA links",
-      "Campaign folders",
-      "Advanced analytics",
+      { text: "3 websites" },
+      { text: "10 proof walls" },
+      { text: "1,500 proof cards" },
+      { text: "Remove Castio branding" },
+      { text: "Custom themes & styling controls" },
+      { text: "Wall, card & CTA analytics" },
+      { text: "Templates", soon: true },
+      { text: "Priority updates" },
     ],
     highlight: true,
   },
   {
-    name: "Tier 3",
-    price: "$299",
+    name: "Agency Proof",
+    tier: "Tier 3",
+    price: "$699",
     cadence: "one-time",
-    blurb: "For agencies running proof for multiple clients.",
+    blurb: "For agencies running proof across many clients.",
     features: [
-      "10 websites",
-      "30 proof walls",
-      "5,000 proof cards",
-      "250,000 wall views / month",
-      "Agency / client use",
-      "Priority support",
-      "Custom CSS",
-      "Early access to future integrations",
+      { text: "10 websites" },
+      { text: "30 proof walls" },
+      { text: "7,500 proof cards" },
+      { text: "Client use" },
+      { text: "Remove Castio branding" },
+      { text: "Priority support" },
+      { text: "Custom CSS", soon: true },
+      { text: "Advanced analytics", soon: true },
     ],
     highlight: false,
   },
 ];
 
-export const LIFETIME_LIMITATION =
-  "Lifetime access applies only to the limits of the purchased plan. It does not include unlimited usage, enterprise features, white-label, API access, done-for-you setup, or future premium add-ons unless explicitly stated.";
+/** Lifetime fair-use / limitation terms, shown as a clear list. */
+export const LIFETIME_TERMS = [
+  "Lifetime access applies to the limits of the purchased plan.",
+  "Future enterprise, managed-service, white-label, API-heavy or custom integration features may be sold separately.",
+  "No unlimited usage is included unless explicitly stated.",
+  "Abuse, resale and excessive usage can be restricted under fair-use terms.",
+];
 
 export const MARKETING_NAV = [
   { href: "/pricing", label: "Pricing" },
