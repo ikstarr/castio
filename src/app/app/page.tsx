@@ -48,10 +48,10 @@ export default async function DashboardPage() {
   );
 
   const stats = [
-    { label: "Proof walls", value: walls.length },
-    { label: "Published", value: published },
-    { label: "Wall views", value: totalViews },
-    { label: "CTA clicks", value: totalCtaClicks },
+    { label: "Proof walls", value: walls.length, icon: "▦" },
+    { label: "Published", value: published, icon: "✓" },
+    { label: "Wall views", value: totalViews, icon: "◉" },
+    { label: "CTA clicks", value: totalCtaClicks, icon: "↗" },
   ];
 
   return (
@@ -66,11 +66,21 @@ export default async function DashboardPage() {
 
       <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
         {stats.map((s) => (
-          <div key={s.label} className="cx-card p-5">
-            <p className="text-sm text-muted">{s.label}</p>
-            <p className="mt-1 text-3xl font-semibold tracking-tight">
-              {s.value.toLocaleString()}
-            </p>
+          <div key={s.label} className="cx-card flex items-center gap-3.5 p-5">
+            <span
+              className="grid h-10 w-10 flex-none place-items-center rounded-xl bg-brand-soft text-brand"
+              aria-hidden
+            >
+              {s.icon}
+            </span>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted">
+                {s.label}
+              </p>
+              <p className="text-2xl font-semibold tracking-tight">
+                {s.value.toLocaleString()}
+              </p>
+            </div>
           </div>
         ))}
       </div>

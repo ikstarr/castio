@@ -81,6 +81,7 @@ const saasWall: WallWithCards = {
       person_role: "Head of Ops",
       company: "Northwind Labs",
       source_platform: "Email",
+      tags: ["onboarding", "time-saved"],
     }),
     card("demo-saas", 1, {
       proof_type: "metric",
@@ -108,6 +109,7 @@ const saasWall: WallWithCards = {
       person_role: "Founder",
       company: "Cadence",
       source_platform: "G2",
+      tags: ["fast-setup", "pricing-page"],
     }),
     card("demo-saas", 4, {
       proof_type: "press_mention",

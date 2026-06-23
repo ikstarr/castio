@@ -106,6 +106,16 @@ function ProofCardView({
         </a>
       ) : null}
 
+      {card.tags && card.tags.length > 0 ? (
+        <div className="castio-tags">
+          {card.tags.slice(0, 4).map((t) => (
+            <span key={t} className="castio-tag">
+              #{t}
+            </span>
+          ))}
+        </div>
+      ) : null}
+
       {(showSource || showCardCta) && (
         <footer className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-1">
           {showSource ? (

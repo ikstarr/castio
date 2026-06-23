@@ -19,47 +19,60 @@ export default function LifetimePage() {
         subtitle="A limited lifetime offer for founders and agencies who would rather own their proof tooling than rent it."
       />
 
-      <section className="cx-container py-16">
-        <div className="grid gap-6 lg:grid-cols-3">
-          {LIFETIME_TIERS.map((tier) => (
-            <div
-              key={tier.name}
-              className={`cx-card flex flex-col p-7 ${
-                tier.highlight
-                  ? "ring-2 ring-brand lg:-translate-y-2 lg:shadow-lg"
-                  : "cx-card-i"
-              }`}
-            >
-              {tier.highlight ? (
-                <span className="mb-3 inline-flex w-fit rounded-full bg-brand-soft px-3 py-1 text-xs font-semibold text-brand">
-                  Best value
-                </span>
-              ) : null}
-              <h2 className="text-lg font-semibold text-muted">{tier.name}</h2>
-              <div className="mt-2 flex items-baseline gap-1.5">
-                <span className="text-4xl font-semibold tracking-tight">
-                  {tier.price}
-                </span>
-                <span className="text-sm text-muted">{tier.cadence}</span>
-              </div>
-              <p className="mt-3 text-sm text-muted">{tier.blurb}</p>
-              <ul className="mt-6 flex-1 space-y-3 text-sm">
-                {tier.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2">
-                    <span className="mt-0.5 text-brand">✓</span>
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <ButtonLink
-                href="/signup"
-                className="mt-7"
-                variant={tier.highlight ? "primary" : "outline"}
+      <section className="cx-container py-14">
+        <div className="grid items-start gap-5 lg:grid-cols-3">
+          {LIFETIME_TIERS.map((tier) => {
+            const hi = tier.highlight;
+            return (
+              <div
+                key={tier.name}
+                className={
+                  hi
+                    ? "cx-stage relative flex flex-col rounded-[1.5rem] p-7 text-white shadow-brand lg:-translate-y-3"
+                    : "cx-card cx-card-i flex flex-col p-7"
+                }
               >
-                Get {tier.name}
-              </ButtonLink>
-            </div>
-          ))}
+                <div className="flex items-center justify-between">
+                  <h2 className={hi ? "text-sm font-semibold text-white/70" : "text-sm font-semibold text-muted"}>
+                    {tier.name}
+                  </h2>
+                  {hi ? (
+                    <span className="rounded-full border border-white/15 bg-white/10 px-2.5 py-0.5 text-xs font-semibold text-white">
+                      Best value
+                    </span>
+                  ) : null}
+                </div>
+                <div className="mt-2 flex items-baseline gap-1.5">
+                  <span className="text-4xl font-semibold tracking-tight">
+                    {tier.price}
+                  </span>
+                  <span className={hi ? "text-sm text-white/55" : "text-sm text-muted"}>
+                    {tier.cadence}
+                  </span>
+                </div>
+                <p className={hi ? "mt-3 text-sm text-white/65" : "mt-3 text-sm text-muted"}>
+                  {tier.blurb}
+                </p>
+                <ul className="mt-6 flex-1 space-y-3 text-sm">
+                  {tier.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2.5">
+                      <span className={hi ? "mt-0.5 text-accent" : "mt-0.5 text-brand"}>
+                        ✓
+                      </span>
+                      <span className={hi ? "text-white/90" : undefined}>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <ButtonLink
+                  href="/signup"
+                  className="mt-7"
+                  variant={hi ? "primary" : "outline"}
+                >
+                  Get {tier.name}
+                </ButtonLink>
+              </div>
+            );
+          })}
         </div>
 
         {/* Buyer reassurance */}

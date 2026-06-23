@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { ButtonLink } from "@/components/ui";
 import { cn } from "@/lib/utils";
 
@@ -15,8 +16,8 @@ export function PageHeader({
 }) {
   return (
     <section className="cx-glow cx-grid-bg border-b border-border">
-      <div className="cx-container py-16 text-center sm:py-20">
-        {eyebrow ? <p className="cx-eyebrow mb-3">{eyebrow}</p> : null}
+      <div className="cx-container py-14 text-center sm:py-18">
+        {eyebrow ? <p className="cx-eyebrow is-center mb-3">{eyebrow}</p> : null}
         <h1 className="mx-auto max-w-3xl text-balance text-4xl font-semibold tracking-tight sm:text-5xl sm:leading-[1.08]">
           {title}
         </h1>
@@ -51,44 +52,61 @@ export function Prose({
   );
 }
 
+const CTA_TRUST = ["No credit card", "No social logins", "Live in 5 minutes"];
+const CTA_METRICS = [
+  ["13", "proof types"],
+  ["2", "layouts live"],
+  ["1 line", "to embed"],
+  ["5 min", "to publish"],
+];
+
 export function CTASection({
-  title = "Build your first proof wall today",
-  subtitle = "Free to start. No social logins. Live in five minutes.",
+  title = "Turn your proof into a conversion asset",
+  subtitle = "Build a curated proof wall and embed it anywhere. Free to start — no social logins, live in five minutes.",
 }: {
   title?: string;
   subtitle?: string;
 }) {
   return (
     <section className="cx-container py-16 sm:py-20">
-      <div className="relative overflow-hidden rounded-[1.75rem] bg-foreground p-8 text-center text-white shadow-lg sm:p-14">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-60"
-          style={{
-            background:
-              "radial-gradient(40% 60% at 20% 0%, rgba(109,40,217,0.45), transparent 70%), radial-gradient(40% 60% at 90% 100%, rgba(13,148,136,0.30), transparent 70%)",
-          }}
-          aria-hidden
-        />
-        <div className="relative">
-          <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
-            {title}
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-pretty text-white/70">
-            {subtitle}
-          </p>
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <ButtonLink href="/signup" size="lg">
-              Start free
-            </ButtonLink>
-            <ButtonLink
-              href="/demo"
-              size="lg"
-              variant="outline"
-              className="border-white/20 bg-transparent text-white hover:bg-white/10 hover:border-white/40"
-            >
-              See a live wall
-            </ButtonLink>
-          </div>
+      <div className="cx-stage cx-stage-hairline rounded-[1.75rem] px-6 py-12 text-center sm:px-12 sm:py-16">
+        <p className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white/75">
+          Start free today
+        </p>
+        <h2 className="mx-auto mt-4 max-w-2xl text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          {title}
+        </h2>
+        <p className="mx-auto mt-4 max-w-xl text-pretty text-white/65">
+          {subtitle}
+        </p>
+        <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+          <ButtonLink href="/signup" size="lg">
+            Build your proof wall
+          </ButtonLink>
+          <Link
+            href="/demo"
+            className="inline-flex h-12 items-center justify-center rounded-full border border-white/20 px-7 text-base font-semibold text-white transition-colors hover:border-white/40 hover:bg-white/10"
+          >
+            See a live wall
+          </Link>
+        </div>
+        <ul className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-white/55">
+          {CTA_TRUST.map((t) => (
+            <li key={t} className="flex items-center gap-1.5">
+              <span className="text-accent" aria-hidden>
+                ✓
+              </span>
+              {t}
+            </li>
+          ))}
+        </ul>
+        <div className="mx-auto mt-10 grid max-w-2xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-4">
+          {CTA_METRICS.map(([num, label]) => (
+            <div key={label} className="bg-ink-2/80 px-4 py-5">
+              <p className="text-2xl font-semibold text-white">{num}</p>
+              <p className="mt-0.5 text-xs text-white/55">{label}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
