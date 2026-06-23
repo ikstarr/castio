@@ -1,26 +1,165 @@
 @import "tailwindcss";
 
+/*
+  Castio design system
+  Premium, lightweight, trust-building. A conversion-asset builder — not a
+  generic dashboard, not a toy widget.
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fbfbfd;
+  --surface: #ffffff;
+  --surface-muted: #f5f5f8;
+  --foreground: #0d0d12;
+  --muted: #6b6b78;
+  --border: #e8e8ef;
+  --brand: #6d28d9;
+  --brand-strong: #5b21b6;
+  --brand-soft: #f3eefe;
+  --accent: #0ea5a3;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+  --color-accent: var(--accent);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Utility helpers reused across the marketing + app surfaces */
+.cx-container {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+.cx-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 1px 2px rgba(13, 13, 18, 0.04), 0 8px 24px rgba(13, 13, 18, 0.05);
+}
+
+.cx-gradient-text {
+  background: linear-gradient(90deg, var(--brand) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.cx-grid-bg {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(109, 40, 217, 0.08) 1px, transparent 0);
+  background-size: 28px 28px;
+}
+
+/* Dark proof walls (theme_mode = dark) render in an isolated scope */
+.castio-wall[data-theme="dark"] {
+  --wall-bg: #0c0c11;
+  --wall-surface: #16161d;
+  --wall-border: #262630;
+  --wall-fg: #f4f4f6;
+  --wall-muted: #a0a0ad;
+}
+
+.castio-wall[data-theme="light"] {
+  --wall-bg: #ffffff;
+  --wall-surface: #ffffff;
+  --wall-border: #e8e8ef;
+  --wall-fg: #0d0d12;
+  --wall-muted: #6b6b78;
+}
+
+.castio-wall {
+  background: var(--wall-bg);
+  color: var(--wall-fg);
+}
+
+.castio-grid {
+  display: grid;
+  gap: var(--wall-gap, 20px);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .castio-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (min-width: 1024px) {
+  .castio-grid {
+    grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  }
+}
+
+.castio-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wall-gap, 16px);
+  max-width: 40rem;
+  margin-inline: auto;
+}
+
+.castio-proof-card {
+  background: var(--wall-surface);
+  border: 1px solid var(--wall-border);
+  border-radius: var(--wall-radius, 16px);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-shadow: 0 1px 2px rgba(13, 13, 18, 0.05);
+}
+
+.castio-proof-card .castio-muted {
+  color: var(--wall-muted);
+}
+
+.castio-avatar {
+  display: grid;
+  place-items: center;
+  height: 2.5rem;
+  width: 2.5rem;
+  flex: none;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--wall-accent, #6d28d9) 16%, transparent);
+  color: var(--wall-accent, #6d28d9);
+  font-size: 0.8rem;
+  font-weight: 600;
+  overflow: hidden;
+}
+.castio-avatar img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
