@@ -11,19 +11,20 @@ export function buttonClasses(
   className?: string,
 ): string {
   const base =
-    "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap";
+    "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap active:translate-y-px";
   const sizes: Record<Size, string> = {
     sm: "h-9 px-4 text-sm",
     md: "h-11 px-5 text-sm",
     lg: "h-12 px-7 text-base",
   };
   const variants: Record<Variant, string> = {
-    primary: "bg-brand text-white hover:bg-brand-strong shadow-sm",
-    secondary: "bg-foreground text-white hover:opacity-90",
+    primary:
+      "bg-brand text-white shadow-sm shadow-brand/20 hover:bg-brand-strong hover:shadow-md hover:shadow-brand/25",
+    secondary: "bg-foreground text-white hover:opacity-90 shadow-sm",
     outline:
-      "border border-border bg-surface text-foreground hover:bg-surface-muted",
+      "border border-border-strong bg-surface text-foreground hover:bg-surface-muted hover:border-brand/30",
     ghost: "text-foreground hover:bg-surface-muted",
-    danger: "bg-danger text-white hover:opacity-90",
+    danger: "bg-danger text-white hover:opacity-90 shadow-sm",
   };
   return cn(base, sizes[size], variants[variant], className);
 }
@@ -58,7 +59,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted",
+        "inline-flex items-center gap-1.5 rounded-full border border-border-strong bg-surface px-3 py-1 text-xs font-medium text-muted",
         className,
       )}
     >
@@ -112,10 +113,10 @@ export function Field({
 }
 
 const fieldBase =
-  "w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/70 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20";
+  "w-full rounded-xl border border-border-strong bg-surface px-3.5 py-2.5 text-sm text-foreground transition-colors placeholder:text-muted/60 hover:border-brand/30 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20";
 
 export function Input({ className, ...props }: ComponentProps<"input">) {
-  return <input className={cn(fieldBase, className)} {...props} />;
+  return <input className={cn(fieldBase, "min-h-11", className)} {...props} />;
 }
 
 export function Textarea({ className, ...props }: ComponentProps<"textarea">) {
@@ -124,8 +125,12 @@ export function Textarea({ className, ...props }: ComponentProps<"textarea">) {
   );
 }
 
+// Custom chevron (appearance-none strips the native one).
+const selectChevron =
+  "appearance-none min-h-11 bg-no-repeat bg-[length:1.1rem] bg-[position:right_0.75rem_center] pr-10 bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2365656f%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22/%3E%3C/svg%3E')]";
+
 export function Select({ className, ...props }: ComponentProps<"select">) {
-  return <select className={cn(fieldBase, "appearance-none", className)} {...props} />;
+  return <select className={cn(fieldBase, selectChevron, className)} {...props} />;
 }
 
 export function Card({
@@ -151,16 +156,14 @@ export function SectionHeading({
 }) {
   return (
     <div className={cn("max-w-2xl", center && "mx-auto text-center")}>
-      {eyebrow ? (
-        <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-brand">
-          {eyebrow}
-        </p>
-      ) : null}
-      <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+      {eyebrow ? <p className="cx-eyebrow mb-3">{eyebrow}</p> : null}
+      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-[2.5rem] sm:leading-[1.1]">
         {title}
       </h2>
       {subtitle ? (
-        <p className="mt-4 text-lg text-muted">{subtitle}</p>
+        <p className="mt-4 text-lg leading-relaxed text-muted text-pretty">
+          {subtitle}
+        </p>
       ) : null}
     </div>
   );

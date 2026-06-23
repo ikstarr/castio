@@ -102,7 +102,7 @@ export default async function DashboardPage() {
             <Link
               key={wall.id}
               href={`/app/walls/${wall.id}`}
-              className="cx-card flex flex-col p-5 transition-colors hover:border-brand/40"
+              className="cx-card cx-card-i flex flex-col p-5"
             >
               <div className="flex items-center justify-between">
                 <StatusPill status={wall.status} />

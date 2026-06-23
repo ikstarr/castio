@@ -14,18 +14,16 @@ export function PageHeader({
   children?: ReactNode;
 }) {
   return (
-    <section className="cx-grid-bg border-b border-border">
+    <section className="cx-glow cx-grid-bg border-b border-border">
       <div className="cx-container py-16 text-center sm:py-20">
-        {eyebrow ? (
-          <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-brand">
-            {eyebrow}
-          </p>
-        ) : null}
-        <h1 className="mx-auto max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+        {eyebrow ? <p className="cx-eyebrow mb-3">{eyebrow}</p> : null}
+        <h1 className="mx-auto max-w-3xl text-balance text-4xl font-semibold tracking-tight sm:text-5xl sm:leading-[1.08]">
           {title}
         </h1>
         {subtitle ? (
-          <p className="mx-auto mt-5 max-w-2xl text-lg text-muted">{subtitle}</p>
+          <p className="mx-auto mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-muted">
+            {subtitle}
+          </p>
         ) : null}
         {children ? <div className="mt-8">{children}</div> : null}
       </div>
@@ -61,19 +59,36 @@ export function CTASection({
   subtitle?: string;
 }) {
   return (
-    <section className="cx-container py-20">
-      <div className="cx-card bg-foreground p-10 text-center text-white sm:p-14">
-        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-          {title}
-        </h2>
-        <p className="mx-auto mt-4 max-w-xl text-white/70">{subtitle}</p>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <ButtonLink href="/signup" size="lg">
-            Start free
-          </ButtonLink>
-          <ButtonLink href="/demo" size="lg" variant="outline" className="bg-transparent text-white border-white/20 hover:bg-white/10">
-            See a live wall
-          </ButtonLink>
+    <section className="cx-container py-16 sm:py-20">
+      <div className="relative overflow-hidden rounded-[1.75rem] bg-foreground p-8 text-center text-white shadow-lg sm:p-14">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-60"
+          style={{
+            background:
+              "radial-gradient(40% 60% at 20% 0%, rgba(109,40,217,0.45), transparent 70%), radial-gradient(40% 60% at 90% 100%, rgba(13,148,136,0.30), transparent 70%)",
+          }}
+          aria-hidden
+        />
+        <div className="relative">
+          <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
+            {title}
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-pretty text-white/70">
+            {subtitle}
+          </p>
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <ButtonLink href="/signup" size="lg">
+              Start free
+            </ButtonLink>
+            <ButtonLink
+              href="/demo"
+              size="lg"
+              variant="outline"
+              className="border-white/20 bg-transparent text-white hover:bg-white/10 hover:border-white/40"
+            >
+              See a live wall
+            </ButtonLink>
+          </div>
         </div>
       </div>
     </section>

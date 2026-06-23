@@ -75,25 +75,37 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="cx-grid-bg border-b border-border">
-        <div className="cx-container grid items-center gap-12 py-20 lg:grid-cols-2 lg:py-28">
+      <section className="cx-glow cx-grid-bg border-b border-border">
+        <div className="cx-container grid items-center gap-12 py-14 sm:py-20 lg:grid-cols-2 lg:py-28">
           <div>
-            <Badge className="bg-brand-soft text-brand">
+            <Badge className="bg-surface">
+              <span className="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden />
               Social proof, done properly
             </Badge>
-            <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+            <h1 className="mt-5 text-balance text-[2.5rem] font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-[3.75rem]">
               Turn scattered proof into{" "}
               <span className="cx-gradient-text">walls that convert</span>.
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-muted">
+            <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-muted">
               {BRAND.name} turns testimonials, reviews, social posts,
               screenshots and UGC into clean, embeddable proof walls for your
               website, store or launch page.
             </p>
-            <p className="mt-4 text-base font-medium text-foreground">
-              {BRAND.promise}
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-base font-semibold">
+              {["Collect", "Curate", "Display", "Convert"].map((w, i) => (
+                <span key={w} className="flex items-center gap-2.5">
+                  <span className={i === 3 ? "cx-gradient-text" : undefined}>
+                    {w}.
+                  </span>
+                  {i < 3 ? (
+                    <span className="text-border-strong" aria-hidden>
+                      ·
+                    </span>
+                  ) : null}
+                </span>
+              ))}
+            </div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <ButtonLink href="/signup" size="lg">
                 Build your proof wall
               </ButtonLink>
@@ -101,19 +113,42 @@ export default function HomePage() {
                 See a live wall
               </ButtonLink>
             </div>
-            <p className="mt-4 text-sm text-muted">
-              No credit card · No social logins · Live in 5 minutes
-            </p>
+            <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted">
+              {["No credit card", "No social logins", "Live in 5 minutes"].map(
+                (t) => (
+                  <li key={t} className="flex items-center gap-1.5">
+                    <span className="text-brand" aria-hidden>
+                      ✓
+                    </span>
+                    {t}
+                  </li>
+                ),
+              )}
+            </ul>
           </div>
 
           <div className="relative">
-            <div className="cx-card p-4 sm:p-6">
-              <p className="mb-3 px-1 text-xs font-medium uppercase tracking-wide text-muted">
-                Live preview · {heroWall.wall.name}
-              </p>
-              <ProofWall
-                data={{ wall: heroWall.wall, cards: heroWall.cards.slice(0, 4) }}
-              />
+            <div
+              className="pointer-events-none absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-to-tr from-brand/10 to-accent/10 blur-2xl"
+              aria-hidden
+            />
+            <div className="cx-card cx-elevated overflow-hidden p-0">
+              <div className="flex items-center gap-1.5 border-b border-border bg-surface-muted px-4 py-3">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+                <span className="ml-2 truncate text-xs text-muted">
+                  castio.co/w/{heroWall.wall.slug}
+                </span>
+              </div>
+              <div className="p-4 sm:p-6">
+                <ProofWall
+                  data={{
+                    wall: heroWall.wall,
+                    cards: heroWall.cards.slice(0, 4),
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -129,7 +164,7 @@ export default function HomePage() {
         />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((step, i) => (
-            <div key={step.title} className="cx-card p-6">
+            <div key={step.title} className="cx-card cx-card-i p-6">
               <div className="grid h-9 w-9 place-items-center rounded-full bg-brand-soft text-sm font-semibold text-brand">
                 {i + 1}
               </div>
@@ -208,7 +243,7 @@ export default function HomePage() {
           />
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {FEATURES.map((f) => (
-              <div key={f.title} className="cx-card p-6">
+              <div key={f.title} className="cx-card cx-card-i p-6">
                 <h3 className="text-lg font-semibold">{f.title}</h3>
                 <p className="mt-2 text-sm text-muted">{f.body}</p>
               </div>

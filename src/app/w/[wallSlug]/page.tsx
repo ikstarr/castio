@@ -34,14 +34,32 @@ export default async function PublicWallPage({ params }: Params) {
   return (
     <div className="flex min-h-screen flex-col" style={pageStyle}>
       <WallViewTracker wallId={data.wall.id} />
-      <header className="border-b" style={{ borderColor: dark ? "#262630" : "#e8e8ef" }}>
+      <header
+        className="border-b"
+        style={{ borderColor: dark ? "#262630" : "#e8e8ef" }}
+      >
         <div className="cx-container flex h-14 items-center justify-between">
-          <Link href="/" className="text-sm font-semibold">
+          <Link href="/" className="flex items-center gap-2 text-sm font-semibold">
+            <span
+              className="grid h-6 w-6 place-items-center rounded-[7px] text-white"
+              style={{ background: data.wall.accent_color }}
+              aria-hidden
+            >
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none">
+                <path
+                  d="M5 6.5A2.5 2.5 0 0 1 7.5 4h9A2.5 2.5 0 0 1 19 6.5v7A2.5 2.5 0 0 1 16.5 16H10l-4 3.5V16H7.5"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </span>
             Castio
           </Link>
           <Link
             href="/signup"
-            className="rounded-full px-4 py-1.5 text-xs font-semibold text-white"
+            className="rounded-full px-4 py-2 text-xs font-semibold text-white shadow-sm transition-transform hover:-translate-y-0.5"
             style={{ background: data.wall.accent_color }}
           >
             Build your own
@@ -49,15 +67,25 @@ export default async function PublicWallPage({ params }: Params) {
         </div>
       </header>
 
-      <main className="cx-container flex-1 py-12">
+      <main className="cx-container flex-1 py-12 sm:py-16">
         <div className="mx-auto max-w-5xl">
-          <h1 className="text-3xl font-semibold tracking-tight">
-            {data.wall.name}
-          </h1>
-          {data.wall.description ? (
-            <p className="mt-2 opacity-70">{data.wall.description}</p>
-          ) : null}
-          <div className="mt-8">
+          <div className="text-center">
+            <p
+              className="text-xs font-semibold uppercase tracking-[0.14em]"
+              style={{ color: data.wall.accent_color }}
+            >
+              Wall of proof
+            </p>
+            <h1 className="mt-3 text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
+              {data.wall.name}
+            </h1>
+            {data.wall.description ? (
+              <p className="mx-auto mt-3 max-w-2xl text-pretty opacity-70">
+                {data.wall.description}
+              </p>
+            ) : null}
+          </div>
+          <div className="mt-10">
             <ProofWall data={data} interactive />
           </div>
         </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageHeader, CTASection } from "@/components/marketing";
 import { ButtonLink } from "@/components/ui";
-import { LIFETIME_TIERS, LIFETIME_LIMITATION } from "@/lib/constants";
+import { BRAND, LIFETIME_TIERS, LIFETIME_LIMITATION } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Lifetime deal",
@@ -25,7 +25,9 @@ export default function LifetimePage() {
             <div
               key={tier.name}
               className={`cx-card flex flex-col p-7 ${
-                tier.highlight ? "ring-2 ring-brand" : ""
+                tier.highlight
+                  ? "ring-2 ring-brand lg:-translate-y-2 lg:shadow-lg"
+                  : "cx-card-i"
               }`}
             >
               {tier.highlight ? (
@@ -60,7 +62,29 @@ export default function LifetimePage() {
           ))}
         </div>
 
-        <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-border bg-surface p-6 text-sm text-muted">
+        {/* Buyer reassurance */}
+        <div className="mx-auto mt-10 grid max-w-3xl gap-3 sm:grid-cols-3">
+          {[
+            ["14-day money-back", "Try it risk-free. Full refund within 14 days."],
+            ["Founder-operated", `Built and supported by ${BRAND.operator}.`],
+            ["No card data stored", "Manual-first. No social logins or scraping."],
+          ].map(([title, body]) => (
+            <div
+              key={title}
+              className="rounded-2xl border border-border bg-surface p-4"
+            >
+              <p className="flex items-center gap-2 text-sm font-semibold">
+                <span className="text-brand" aria-hidden>
+                  ✓
+                </span>
+                {title}
+              </p>
+              <p className="mt-1 text-xs text-muted">{body}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mx-auto mt-6 max-w-3xl rounded-2xl border border-border bg-surface p-6 text-sm text-muted">
           <p className="font-semibold text-foreground">What lifetime includes</p>
           <p className="mt-2">{LIFETIME_LIMITATION}</p>
           <p className="mt-3">

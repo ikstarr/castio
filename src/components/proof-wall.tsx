@@ -16,6 +16,21 @@ function Avatar({ card }: { card: ProofCard }) {
   );
 }
 
+function Rating({ title }: { title: string }) {
+  const stars = title.match(/^★+/)?.[0] ?? "";
+  const rest = title.slice(stars.length).trim();
+  return (
+    <p className="leading-snug">
+      <span className="castio-stars" style={{ color: "var(--gold)" }}>
+        {stars}
+      </span>
+      {rest ? (
+        <span className="ml-1.5 text-[15px] font-semibold">{rest}</span>
+      ) : null}
+    </p>
+  );
+}
+
 function ProofCardView({
   card,
   wall,
@@ -28,52 +43,53 @@ function ProofCardView({
   const isRating = (card.title ?? "").trim().startsWith("★");
   const showSource = wall.show_source_label && card.source_platform;
   const showCardCta = wall.show_cta_button && card.cta_url && card.cta_label;
-
-  const image = card.screenshot_url || (card.proof_type !== "video" && card.media_url);
+  const hasIdentity = card.person_name || card.avatar_url;
+  const image =
+    card.screenshot_url || (card.proof_type !== "video" && card.media_url);
 
   return (
     <article className="castio-proof-card">
-      <header className="flex items-start justify-between gap-3">
-        <div className="flex items-center gap-3">
-          {(card.person_name || card.avatar_url) && <Avatar card={card} />}
-          <div className="min-w-0">
-            {card.person_name ? (
-              <p className="text-sm font-semibold leading-tight">
-                {card.person_name}
-              </p>
-            ) : null}
-            {(card.person_role || card.company) && (
-              <p className="castio-muted text-xs leading-tight">
-                {[card.person_role, card.company].filter(Boolean).join(" · ")}
-              </p>
-            )}
+      <header className="flex items-start justify-between gap-2">
+        {hasIdentity ? (
+          <div className="flex min-w-0 items-center gap-3">
+            <Avatar card={card} />
+            <div className="min-w-0">
+              {card.person_name ? (
+                <p className="truncate text-sm font-semibold leading-tight">
+                  {card.person_name}
+                </p>
+              ) : null}
+              {(card.person_role || card.company) && (
+                <p className="castio-muted truncate text-xs leading-tight">
+                  {[card.person_role, card.company].filter(Boolean).join(" · ")}
+                </p>
+              )}
+            </div>
           </div>
-        </div>
-        <span
-          className="castio-muted shrink-0 text-[11px] font-medium"
-          title={proofTypeLabel(card.proof_type)}
-        >
-          {proofTypeIcon(card.proof_type)}
+        ) : (
+          <span />
+        )}
+        <span className="castio-typechip" title={proofTypeLabel(card.proof_type)}>
+          <span aria-hidden>{proofTypeIcon(card.proof_type)}</span>
+          {proofTypeLabel(card.proof_type)}
         </span>
       </header>
 
       {isRating ? (
-        <p style={{ color: wall.accent_color }} className="text-sm font-semibold">
-          {card.title}
-        </p>
+        <Rating title={card.title ?? ""} />
       ) : card.title ? (
         <p className="text-base font-semibold leading-snug">{card.title}</p>
       ) : null}
 
       {card.quote_or_caption ? (
-        <p className="text-[15px] leading-relaxed">{card.quote_or_caption}</p>
+        <p className="castio-quote">{card.quote_or_caption}</p>
       ) : null}
 
       {image ? (
         <img
           src={image as string}
           alt={card.title ?? "Proof"}
-          className="w-full rounded-lg border"
+          className="w-full rounded-xl border"
           style={{ borderColor: "var(--wall-border)" }}
         />
       ) : null}
@@ -83,29 +99,27 @@ function ProofCardView({
           href={card.media_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm font-medium"
+          className="inline-flex w-fit items-center gap-1.5 text-sm font-semibold"
           style={{ color: wall.accent_color }}
         >
-          ▶ Watch video
+          <span aria-hidden>▶</span> Watch video
         </a>
       ) : null}
 
       {(showSource || showCardCta) && (
-        <footer className="mt-auto flex items-center justify-between gap-3 pt-1">
+        <footer className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-1">
           {showSource ? (
             card.source_url ? (
               <a
                 href={card.source_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="castio-muted text-xs hover:underline"
+                className="castio-source hover:opacity-80"
               >
-                via {card.source_platform}
+                {card.source_platform}
               </a>
             ) : (
-              <span className="castio-muted text-xs">
-                via {card.source_platform}
-              </span>
+              <span className="castio-source">{card.source_platform}</span>
             )
           ) : (
             <span />
@@ -117,13 +131,14 @@ function ProofCardView({
                 wallId={wall.id}
                 cardId={card.id}
                 href={card.cta_url!}
-                className="text-xs font-semibold hover:underline"
+                className="castio-cardcta hover:underline"
+                style={{ color: wall.accent_color }}
               >
                 {card.cta_label} →
               </TrackLink>
             ) : (
               <span
-                className="text-xs font-semibold"
+                className="castio-cardcta"
                 style={{ color: wall.accent_color }}
               >
                 {card.cta_label} →
@@ -156,9 +171,12 @@ export function ProofWall({
 
   return (
     <div className="castio-wall" data-theme={wall.theme_mode} style={style}>
-      <div className="p-1">
+      <div className="p-0.5">
         {cards.length === 0 ? (
-          <div className="castio-muted rounded-xl border border-dashed py-16 text-center text-sm">
+          <div
+            className="castio-muted rounded-2xl border border-dashed py-16 text-center text-sm"
+            style={{ borderColor: "var(--wall-border)" }}
+          >
             No approved proof yet.
           </div>
         ) : (
@@ -175,20 +193,20 @@ export function ProofWall({
         )}
 
         {wall.show_cta_button && wall.cta_url && wall.cta_label ? (
-          <div className="mt-6 text-center">
+          <div className="mt-7 text-center">
             {interactive ? (
               <TrackLink
                 kind="cta"
                 wallId={wall.id}
                 href={wall.cta_url}
-                className="inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-semibold text-white shadow-sm"
+                className="inline-flex h-12 items-center justify-center rounded-full px-7 text-sm font-semibold text-white shadow-sm transition-transform hover:-translate-y-0.5"
                 style={{ background: wall.accent_color }}
               >
                 {wall.cta_label}
               </TrackLink>
             ) : (
               <span
-                className="inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-semibold text-white shadow-sm"
+                className="inline-flex h-12 items-center justify-center rounded-full px-7 text-sm font-semibold text-white shadow-sm"
                 style={{ background: wall.accent_color }}
               >
                 {wall.cta_label}
@@ -198,13 +216,18 @@ export function ProofWall({
         ) : null}
 
         {wall.show_castio_branding ? (
-          <p className="castio-muted mt-6 text-center text-xs">
+          <p className="castio-muted mt-6 flex items-center justify-center gap-1.5 text-center text-xs">
+            <span
+              className="inline-block h-3 w-3 rounded-[5px]"
+              style={{ background: wall.accent_color, opacity: 0.85 }}
+              aria-hidden
+            />
             Powered by{" "}
             <a
               href="https://castio.co"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium hover:underline"
+              className="font-semibold hover:underline"
             >
               Castio
             </a>

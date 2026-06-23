@@ -7,19 +7,26 @@
 */
 
 :root {
-  --background: #fbfbfd;
+  --background: #fafafb;
   --surface: #ffffff;
-  --surface-muted: #f5f5f8;
-  --foreground: #0d0d12;
-  --muted: #6b6b78;
-  --border: #e8e8ef;
+  --surface-muted: #f4f4f7;
+  --foreground: #0b0b10;
+  --muted: #65656f;
+  --border: #e9e9f0;
+  --border-strong: #dcdce6;
   --brand: #6d28d9;
   --brand-strong: #5b21b6;
   --brand-soft: #f3eefe;
-  --accent: #0ea5a3;
+  --accent: #0d9488;
+  --gold: #f59e0b;
   --success: #16a34a;
   --warning: #d97706;
   --danger: #dc2626;
+  --ring: rgba(109, 40, 217, 0.35);
+
+  --shadow-sm: 0 1px 2px rgba(13, 13, 18, 0.05);
+  --shadow-md: 0 1px 2px rgba(13, 13, 18, 0.04), 0 6px 16px rgba(13, 13, 18, 0.06);
+  --shadow-lg: 0 2px 4px rgba(13, 13, 18, 0.04), 0 18px 44px rgba(13, 13, 18, 0.10);
 }
 
 @theme inline {
@@ -29,10 +36,12 @@
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-brand: var(--brand);
   --color-brand-strong: var(--brand-strong);
   --color-brand-soft: var(--brand-soft);
   --color-accent: var(--accent);
+  --color-gold: var(--gold);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
@@ -46,6 +55,7 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -53,52 +63,123 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-/* Utility helpers reused across the marketing + app surfaces */
+::selection {
+  background: color-mix(in srgb, var(--brand) 22%, transparent);
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.02em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   Layout + surface helpers
+   --------------------------------------------------------------------------- */
 .cx-container {
   width: 100%;
   max-width: 72rem;
   margin-inline: auto;
   padding-inline: 1.25rem;
 }
+@media (min-width: 640px) {
+  .cx-container {
+    padding-inline: 1.5rem;
+  }
+}
 
 .cx-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-2xl);
-  box-shadow: 0 1px 2px rgba(13, 13, 18, 0.04), 0 8px 24px rgba(13, 13, 18, 0.05);
+  box-shadow: var(--shadow-md);
+}
+
+/* Interactive card (links/tiles) — subtle lift on hover */
+.cx-card-i {
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+.cx-card-i:hover {
+  border-color: color-mix(in srgb, var(--brand) 35%, var(--border));
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.cx-elevated {
+  box-shadow: var(--shadow-lg);
+}
+
+.cx-eyebrow {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brand);
 }
 
 .cx-gradient-text {
-  background: linear-gradient(90deg, var(--brand) 0%, var(--accent) 100%);
+  background: linear-gradient(100deg, var(--brand) 0%, #9333ea 45%, var(--accent) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .cx-grid-bg {
-  background-image:
-    radial-gradient(circle at 1px 1px, rgba(109, 40, 217, 0.08) 1px, transparent 0);
-  background-size: 28px 28px;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(109, 40, 217, 0.09) 1px,
+    transparent 0
+  );
+  background-size: 26px 26px;
 }
 
-/* Dark proof walls (theme_mode = dark) render in an isolated scope */
+/* Soft brand glow behind hero / page headers */
+.cx-glow {
+  position: relative;
+  isolation: isolate;
+}
+.cx-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(50% 60% at 15% 0%, rgba(109, 40, 217, 0.10), transparent 70%),
+    radial-gradient(45% 55% at 95% 10%, rgba(13, 148, 136, 0.08), transparent 70%);
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Proof wall — the product's visual sales asset
+   --------------------------------------------------------------------------- */
 .castio-wall[data-theme="dark"] {
-  --wall-bg: #0c0c11;
-  --wall-surface: #16161d;
-  --wall-border: #262630;
-  --wall-fg: #f4f4f6;
-  --wall-muted: #a0a0ad;
+  --wall-bg: #0b0b11;
+  --wall-surface: #15151d;
+  --wall-surface-2: #1c1c26;
+  --wall-border: #292935;
+  --wall-fg: #f5f5f7;
+  --wall-muted: #a3a3b0;
 }
 
 .castio-wall[data-theme="light"] {
   --wall-bg: #ffffff;
   --wall-surface: #ffffff;
-  --wall-border: #e8e8ef;
-  --wall-fg: #0d0d12;
-  --wall-muted: #6b6b78;
+  --wall-surface-2: #f6f6f9;
+  --wall-border: #e9e9f0;
+  --wall-fg: #0b0b10;
+  --wall-muted: #65656f;
 }
 
 .castio-wall {
@@ -126,7 +207,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--wall-gap, 16px);
-  max-width: 40rem;
+  max-width: 42rem;
   margin-inline: auto;
 }
 
@@ -134,32 +215,86 @@ body {
   background: var(--wall-surface);
   border: 1px solid var(--wall-border);
   border-radius: var(--wall-radius, 16px);
-  padding: 1.25rem;
+  padding: 1.4rem;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.9rem;
   box-shadow: 0 1px 2px rgba(13, 13, 18, 0.05);
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+.castio-proof-card:hover {
+  box-shadow: 0 6px 22px rgba(13, 13, 18, 0.09);
+  transform: translateY(-2px);
 }
 
 .castio-proof-card .castio-muted {
   color: var(--wall-muted);
 }
 
+.castio-quote {
+  font-size: 1.0rem;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+}
+
 .castio-avatar {
   display: grid;
   place-items: center;
-  height: 2.5rem;
-  width: 2.5rem;
+  height: 2.6rem;
+  width: 2.6rem;
   flex: none;
   border-radius: 999px;
   background: color-mix(in srgb, var(--wall-accent, #6d28d9) 16%, transparent);
   color: var(--wall-accent, #6d28d9);
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.82rem;
+  font-weight: 700;
   overflow: hidden;
+  box-shadow: 0 0 0 1px var(--wall-border);
 }
 .castio-avatar img {
   height: 100%;
   width: 100%;
   object-fit: cover;
+}
+
+/* Source / platform label pill */
+.castio-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  background: var(--wall-surface-2);
+  border: 1px solid var(--wall-border);
+  padding: 0.18rem 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--wall-muted);
+}
+
+/* Proof-type chip top-right of a card */
+.castio-typechip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border-radius: 999px;
+  background: var(--wall-surface-2);
+  padding: 0.18rem 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--wall-muted);
+  white-space: nowrap;
+}
+
+.castio-stars {
+  letter-spacing: 0.08em;
+  font-size: 0.95rem;
+}
+
+/* In-card CTA pill */
+.castio-cardcta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 600;
 }

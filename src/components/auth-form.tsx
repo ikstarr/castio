@@ -68,7 +68,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   }
 
   return (
-    <div className="w-full max-w-sm">
+    <div className="w-full max-w-sm cx-card cx-elevated p-7 sm:p-8">
       <h1 className="text-2xl font-semibold tracking-tight">
         {isSignup ? "Create your account" : "Welcome back"}
       </h1>

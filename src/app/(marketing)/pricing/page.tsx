@@ -30,7 +30,9 @@ export default function PricingPage() {
             <div
               key={tier.name}
               className={`cx-card flex flex-col p-7 ${
-                tier.highlight ? "ring-2 ring-brand" : ""
+                tier.highlight
+                  ? "ring-2 ring-brand lg:-translate-y-2 lg:shadow-lg"
+                  : "cx-card-i"
               }`}
             >
               {tier.highlight ? (
