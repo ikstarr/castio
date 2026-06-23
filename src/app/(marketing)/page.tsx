@@ -124,8 +124,8 @@ export default function HomePage() {
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-white/65">
             {BRAND.name} turns testimonials, reviews, social posts, screenshots
-            and UGC into curated, embeddable proof walls that help visitors trust
-            you — and buy.
+            and UGC into curated, embeddable website proof walls that help
+            visitors trust you and buy.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <ButtonLink href="/signup" size="lg">
@@ -150,6 +150,11 @@ export default function HomePage() {
               ),
             )}
           </ul>
+          <p className="mx-auto mt-4 max-w-2xl text-sm text-white/45">
+            Use it for testimonials, reviews, social posts, screenshots, UGC,
+            launch proof and founder updates — embed it on your homepage, product
+            pages and pricing pages.
+          </p>
 
           <div className="mx-auto mt-14 max-w-5xl text-left">
             <BrowserMock url={`castio.co/w/${heroWall.wall.slug}`} glow>
