@@ -1,7 +1,13 @@
+import { safeFetch } from "@/lib/safe-fetch";
+
 /**
  * Minimal dependency-free RSS / Atom parser + fetcher, plus a YouTube
  * channel→feed resolver. Good enough for V1 automated imports; not a full
  * spec-compliant parser.
+ *
+ * All network fetches go through `safeFetch`, which enforces SSRF protection
+ * (scheme/port/host checks, private-IP blocking, redirect re-validation,
+ * timeout and size caps).
  */
 
 export interface FeedItem {
@@ -123,21 +129,11 @@ function toIso(d: string): string | null {
 }
 
 export async function fetchFeed(url: string): Promise<FeedItem[]> {
-  let res: Response;
-  try {
-    res = await fetch(url, {
-      headers: {
-        "user-agent": "CastioBot/1.0 (+https://castio.co)",
-        accept:
-          "application/rss+xml, application/atom+xml, application/xml, text/xml;q=0.9, */*;q=0.8",
-      },
-      cache: "no-store",
-    });
-  } catch {
-    throw new Error("Could not reach that URL. Check the address and try again.");
-  }
-  if (!res.ok) throw new Error(`Feed returned HTTP ${res.status}.`);
-  const xml = await res.text();
+  const xml = await safeFetch(url, {
+    "user-agent": "CastioBot/1.0 (+https://castio.co)",
+    accept:
+      "application/rss+xml, application/atom+xml, application/xml, text/xml;q=0.9, */*;q=0.8",
+  });
   const items = parseFeed(xml);
   if (items.length === 0) {
     throw new Error("No items found — is this a valid RSS or Atom feed URL?");
@@ -170,19 +166,13 @@ export async function resolveYoutubeFeedUrl(input: string): Promise<string> {
     ? v
     : `https://www.youtube.com/${v.startsWith("@") ? v : "@" + v}`;
 
-  let res: Response;
+  let html: string;
   try {
-    res = await fetch(pageUrl, {
-      headers: { "user-agent": "Mozilla/5.0 CastioBot" },
-      cache: "no-store",
-    });
-  } catch {
-    throw new Error("Could not load that channel. Paste the channel RSS feed URL instead.");
+    html = await safeFetch(pageUrl, { "user-agent": "Mozilla/5.0 CastioBot" });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "Could not load that channel.";
+    throw new Error(`${msg} Paste the channel RSS feed URL instead.`);
   }
-  if (!res.ok) {
-    throw new Error(`Could not load the channel page (HTTP ${res.status}).`);
-  }
-  const html = await res.text();
   const id =
     html.match(/"channelId":"(UC[\w-]{20,})"/)?.[1] ??
     html.match(/channel_id=(UC[\w-]{20,})/)?.[1] ??

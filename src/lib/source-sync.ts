@@ -47,8 +47,18 @@ export async function importFeed(
     source.type === "youtube" ? "video" : "social_post";
   const platform = source.type === "youtube" ? "YouTube" : source.name;
 
+  // Dedupe within this fetch batch (external id first, link as fallback) so a
+  // malformed feed with duplicate GUIDs can't make the whole insert fail.
+  const batchKeys = new Set<string>();
   const rows = items
-    .filter((it) => it.externalId && !seen.has(it.externalId))
+    .filter((it) => {
+      const key = it.externalId || it.link;
+      if (!key) return false;
+      if (it.externalId && seen.has(it.externalId)) return false; // already imported
+      if (batchKeys.has(key)) return false; // duplicate inside this batch
+      batchKeys.add(key);
+      return true;
+    })
     .map((it) => ({
       workspace_id: source.workspace_id,
       source_id: source.id,
