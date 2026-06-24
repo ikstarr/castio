@@ -33,25 +33,63 @@ function rand(): string {
 // ---------------------------------------------------------------------------
 // Workspaces
 // ---------------------------------------------------------------------------
-export async function createWorkspace(formData: FormData) {
+export type ActionResult = { error?: string };
+
+/**
+ * Create the user's workspace. Used with `useActionState`, so it RETURNS a
+ * user-facing error instead of throwing (which previously crashed the page with
+ * a server-error digest). The real Postgres error is logged server-side.
+ */
+export async function createWorkspace(
+  _prev: ActionResult,
+  formData: FormData,
+): Promise<ActionResult> {
   const user = await requireUser();
   const supabase = await createClient();
   const name = str(formData, "name") ?? "My workspace";
   const base = slugify(name) || "workspace";
 
+  let created = false;
   let slug = base;
-  for (let attempt = 0; attempt < 4; attempt++) {
-    const { error } = await supabase.from("workspaces").insert({
-      owner_id: user.id,
-      name,
-      slug,
-    });
-    if (!error) break;
+  for (let attempt = 0; attempt < 5 && !created; attempt++) {
+    const { error } = await supabase
+      .from("workspaces")
+      .insert({ owner_id: user.id, name, slug });
+
+    if (!error) {
+      created = true;
+      break;
+    }
     if (error.code === "23505") {
       slug = `${base}-${rand()}`;
       continue;
     }
-    throw new Error(error.message);
+
+    // Surface the real cause in the server logs (Vercel function logs).
+    console.error("[createWorkspace] insert failed", {
+      code: error.code,
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+      owner_id: user.id,
+    });
+    if (error.code === "23503") {
+      return {
+        error:
+          "Workspace could not be created — the plans reference data is missing. Run migration 0003 on this project, then try again.",
+      };
+    }
+    return { error: "Workspace could not be created. Please try again." };
+  }
+
+  if (!created) {
+    console.error("[createWorkspace] exhausted unique-slug attempts", {
+      base,
+      owner_id: user.id,
+    });
+    return {
+      error: "Could not generate a unique workspace URL. Try a different name.",
+    };
   }
 
   revalidatePath("/app");

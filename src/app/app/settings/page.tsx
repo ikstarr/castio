@@ -1,7 +1,7 @@
 import { requireUser } from "@/lib/auth";
 import { listWorkspaces } from "@/lib/queries";
-import { createWorkspace } from "@/lib/actions";
-import { Button, ButtonLink, Field, Input } from "@/components/ui";
+import { Button, ButtonLink } from "@/components/ui";
+import { CreateWorkspaceForm } from "@/components/workspace-form";
 import { BRAND } from "@/lib/constants";
 
 export default async function SettingsPage() {
@@ -56,17 +56,9 @@ export default async function SettingsPage() {
           </ul>
         )}
 
-        <form
-          action={createWorkspace}
-          className="mt-5 flex items-end gap-3 border-t border-border pt-5"
-        >
-          <div className="flex-1">
-            <Field label="New workspace name" htmlFor="name">
-              <Input id="name" name="name" required placeholder="Client name" />
-            </Field>
-          </div>
-          <Button type="submit">Create</Button>
-        </form>
+        <div className="mt-5">
+          <CreateWorkspaceForm compact />
+        </div>
       </section>
 
       {/* Plan */}

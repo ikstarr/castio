@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { getPrimaryWorkspace, listWalls } from "@/lib/queries";
-import { createWorkspace } from "@/lib/actions";
-import { Button, ButtonLink, Field, Input, StatusPill } from "@/components/ui";
+import { ButtonLink, StatusPill } from "@/components/ui";
+import { CreateWorkspaceForm } from "@/components/workspace-form";
 
 export default async function DashboardPage() {
   await requireUser();
@@ -20,20 +20,7 @@ export default async function DashboardPage() {
             A workspace holds your proof walls. Name it after your brand,
             product or client.
           </p>
-          <form action={createWorkspace} className="mt-6 space-y-4">
-            <Field label="Workspace name" htmlFor="name">
-              <Input
-                id="name"
-                name="name"
-                required
-                placeholder="Acme Inc"
-                autoFocus
-              />
-            </Field>
-            <Button type="submit" className="w-full">
-              Create workspace
-            </Button>
-          </form>
+          <CreateWorkspaceForm autoFocus />
         </div>
       </div>
     );
