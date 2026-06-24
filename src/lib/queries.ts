@@ -4,11 +4,19 @@ import type { ProofCard, Wall, Workspace } from "@/lib/types";
 /** All workspaces owned by the current user (RLS scopes to owner). */
 export async function listWorkspaces(): Promise<Workspace[]> {
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("workspaces")
     .select("*")
     .order("created_at", { ascending: true })
     .returns<Workspace[]>();
+  // Surface read failures (e.g. missing grants / RLS) instead of silently
+  // returning [] — a swallowed SELECT error here masqueraded as "no workspace".
+  if (error) {
+    console.error("[listWorkspaces] select failed", {
+      code: error.code,
+      message: error.message,
+    });
+  }
   return data ?? [];
 }
 
