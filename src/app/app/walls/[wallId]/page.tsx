@@ -5,6 +5,7 @@ import { getOwnedWall, listCards } from "@/lib/queries";
 import {
   deleteCard,
   deleteWall,
+  setCardPinned,
   setCardStatus,
   setWallStatus,
   updateWall,
@@ -65,6 +66,26 @@ function CardStatusForm({
         className="rounded-full border border-border px-3 py-1 text-xs font-medium text-muted transition-colors hover:border-brand/40 hover:text-foreground"
       >
         {label}
+      </button>
+    </form>
+  );
+}
+
+function PinForm({ card, wallId }: { card: ProofCard; wallId: string }) {
+  return (
+    <form action={setCardPinned}>
+      <input type="hidden" name="card_id" value={card.id} />
+      <input type="hidden" name="wall_id" value={wallId} />
+      <input type="hidden" name="is_pinned" value={card.is_pinned ? "false" : "true"} />
+      <button
+        type="submit"
+        className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+          card.is_pinned
+            ? "border-brand/40 bg-brand-soft text-brand"
+            : "border-border text-muted hover:border-brand/40 hover:text-foreground"
+        }`}
+      >
+        {card.is_pinned ? "📌 Pinned" : "Pin"}
       </button>
     </form>
   );
@@ -313,6 +334,11 @@ export default async function WallEditorPage({ params }: Params) {
                       {proofTypeLabel(card.proof_type)}
                     </span>
                     <StatusPill status={card.status} />
+                    {card.is_pinned ? (
+                      <span className="text-xs" title="Pinned to top" aria-hidden>
+                        📌
+                      </span>
+                    ) : null}
                   </div>
                   <p className="mt-2 line-clamp-2 text-sm">
                     {card.title ? (
@@ -353,6 +379,9 @@ export default async function WallEditorPage({ params }: Params) {
                       status="archived"
                       label="Archive"
                     />
+                  ) : null}
+                  {card.status === "approved" ? (
+                    <PinForm card={card} wallId={wall.id} />
                   ) : null}
                   <Link
                     href={`/app/walls/${wall.id}/cards/${card.id}`}

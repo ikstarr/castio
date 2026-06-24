@@ -32,6 +32,7 @@ function card(
     tags: [],
     status: "approved",
     sort_order: i,
+    is_pinned: false,
     click_count: 0,
     created_at: now,
     updated_at: now,

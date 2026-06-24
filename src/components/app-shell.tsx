@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { href: "/app", label: "Dashboard", exact: true },
   { href: "/app/walls", label: "Walls", exact: false },
+  { href: "/app/sources", label: "Sources", exact: false },
+  { href: "/app/inbox", label: "Inbox", exact: false },
   { href: "/app/settings", label: "Settings", exact: false },
 ];
 

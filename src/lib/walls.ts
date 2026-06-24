@@ -53,6 +53,7 @@ async function approvedCards(wallId: string): Promise<ProofCard[]> {
     .select("*")
     .eq("wall_id", wallId)
     .eq("status", "approved")
+    .order("is_pinned", { ascending: false })
     .order("sort_order", { ascending: true })
     .returns<ProofCard[]>();
   return data ?? [];

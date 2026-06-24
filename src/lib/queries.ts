@@ -45,6 +45,7 @@ export async function listCards(wallId: string): Promise<ProofCard[]> {
     .from("proof_cards")
     .select("*")
     .eq("wall_id", wallId)
+    .order("is_pinned", { ascending: false })
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: true })
     .returns<ProofCard[]>();

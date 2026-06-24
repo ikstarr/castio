@@ -203,7 +203,7 @@ export default function HomePage() {
             center
             eyebrow="Proof sources"
             title="Turn proof from anywhere into a wall"
-            subtitle="Paste, organise and display proof from the places your customers already speak — no account connections required."
+            subtitle="Connect an RSS or YouTube feed, or add testimonials, reviews, social posts, screenshots and UGC by hand. Curate the best before publishing."
           />
           <div className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-2.5">
             {PROOF_SOURCES.map((src) => (
@@ -216,8 +216,11 @@ export default function HomePage() {
             ))}
           </div>
           <p className="mt-6 text-center text-sm text-muted">
-            Add, paste or organise proof from these sources — Castio doesn’t need
-            access to your social accounts.
+            Add, paste or connect proof — then approve the best before it goes
+            live.{" "}
+            <Link href="/sources" className="font-medium text-brand">
+              See all sources &amp; statuses →
+            </Link>
           </p>
         </div>
       </section>

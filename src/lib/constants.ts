@@ -134,6 +134,7 @@ export const PRICING_TIERS: {
       { text: "1 website" },
       { text: "1 proof wall" },
       { text: "25 proof cards" },
+      { text: "Manual proof import only" },
       { text: "Grid + compact list layouts" },
       { text: "Basic embed" },
       { text: "Castio branding" },
@@ -151,6 +152,8 @@ export const PRICING_TIERS: {
       { text: "1 website" },
       { text: "3 proof walls" },
       { text: "250 proof cards" },
+      { text: "RSS & YouTube import" },
+      { text: "Proof Inbox" },
       { text: "Core embed" },
       { text: "Custom theme & accent" },
       { text: "Basic analytics" },
@@ -170,6 +173,7 @@ export const PRICING_TIERS: {
       { text: "3 websites" },
       { text: "10 proof walls" },
       { text: "1,500 proof cards" },
+      { text: "RSS & YouTube import + Proof Inbox" },
       { text: "Remove Castio branding" },
       { text: "Custom themes & styling controls" },
       { text: "Wall, card & CTA analytics" },
@@ -191,8 +195,10 @@ export const PRICING_TIERS: {
       { text: "Client / multi-brand use" },
       { text: "Remove Castio branding" },
       { text: "Priority support" },
+      { text: "RSS & YouTube import + Proof Inbox" },
       { text: "Custom CSS", soon: true },
       { text: "Advanced analytics", soon: true },
+      { text: "Premium social connectors", soon: true },
     ],
     cta: "Start Agency",
     highlight: false,
@@ -204,7 +210,7 @@ export const PRICING_ENTERPRISE = {
   name: "Enterprise",
   price: "Custom",
   blurb:
-    "For high-volume proof systems, managed support and custom requirements.",
+    "For high-volume proof systems, custom sources, managed integrations, higher update frequency and custom requirements.",
   cta: "Contact us",
   href: "/support",
 };
@@ -281,11 +287,67 @@ export const LIFETIME_TERMS = [
   "Abuse, resale and excessive usage can be restricted under fair-use terms.",
 ];
 
+/**
+ * Source catalog for the Source Engine. Statuses are honest:
+ *   live   = automated import works today (RSS, YouTube public feed)
+ *   manual = add it by hand now (automated connector may be coming)
+ *   beta   = connector exists but needs API setup
+ *   soon   = not built
+ * `mode` drives which working flow the card's button opens.
+ */
+export type SourceCatalogStatus = "live" | "manual" | "beta" | "soon";
+export type SourceCatalogMode = "rss" | "youtube" | "manual";
+
+export interface SourceCatalogEntry {
+  key: string;
+  name: string;
+  icon: string;
+  status: SourceCatalogStatus;
+  mode: SourceCatalogMode;
+  blurb: string;
+  platform?: string;
+  note?: string;
+}
+
+export const SOURCE_STATUS_META: Record<
+  SourceCatalogStatus,
+  { label: string; className: string }
+> = {
+  live: { label: "Live", className: "bg-[#e8f7ee] text-[#15803d] border-[#bce7cc]" },
+  manual: { label: "Manual import now", className: "bg-brand-soft text-brand border-brand/20" },
+  beta: { label: "Beta · API setup", className: "bg-[#fff4e5] text-[#b45309] border-[#fde2bd]" },
+  soon: { label: "Coming soon", className: "bg-surface-muted text-muted border-border" },
+};
+
+export const SOURCE_CATALOG: SourceCatalogEntry[] = [
+  { key: "rss", name: "RSS / Atom", icon: "📡", status: "live", mode: "rss", blurb: "Import recent items from any RSS or Atom feed automatically." },
+  { key: "youtube", name: "YouTube", icon: "▶️", status: "live", mode: "youtube", blurb: "Import recent public videos from a channel via its public feed — no OAuth." },
+  { key: "testimonial", name: "Testimonials", icon: "💬", status: "manual", mode: "manual", platform: "Testimonial", blurb: "Add testimonials you collected by hand." },
+  { key: "email", name: "Customer emails", icon: "📧", status: "manual", mode: "manual", platform: "Email", blurb: "Paste praise straight from customer emails." },
+  { key: "screenshot", name: "Screenshots", icon: "🖼️", status: "manual", mode: "manual", platform: "Screenshot", blurb: "Add screenshot proof with an image URL." },
+  { key: "ugc", name: "UGC", icon: "📷", status: "manual", mode: "manual", platform: "UGC", blurb: "Add user-generated content you have rights to show." },
+  { key: "founder_update", name: "Founder updates", icon: "🚀", status: "manual", mode: "manual", platform: "Founder update", blurb: "Turn launch and progress updates into proof." },
+  { key: "instagram", name: "Instagram", icon: "📸", status: "manual", mode: "manual", platform: "Instagram", blurb: "Add an Instagram post manually.", note: "Automated sync coming soon" },
+  { key: "facebook", name: "Facebook", icon: "👍", status: "manual", mode: "manual", platform: "Facebook", blurb: "Add a Facebook post manually.", note: "Automated sync coming soon" },
+  { key: "x", name: "X / Twitter", icon: "𝕏", status: "manual", mode: "manual", platform: "X", blurb: "Add a post from X manually.", note: "Automated sync coming soon" },
+  { key: "linkedin", name: "LinkedIn", icon: "in", status: "manual", mode: "manual", platform: "LinkedIn", blurb: "Add a LinkedIn post manually.", note: "Automated sync coming soon" },
+  { key: "tiktok", name: "TikTok", icon: "🎵", status: "manual", mode: "manual", platform: "TikTok", blurb: "Add a TikTok manually.", note: "Automated sync coming soon" },
+  { key: "reddit", name: "Reddit", icon: "👽", status: "manual", mode: "manual", platform: "Reddit", blurb: "Add a Reddit comment or post manually.", note: "Automated sync coming soon" },
+  { key: "google_reviews", name: "Google Reviews", icon: "⭐", status: "manual", mode: "manual", platform: "Google Reviews", blurb: "Add a Google review manually.", note: "Automated sync coming soon" },
+  { key: "slack", name: "Slack", icon: "💬", status: "manual", mode: "manual", platform: "Slack", blurb: "Add praise from a Slack message manually.", note: "Automated sync coming soon" },
+  { key: "tumblr", name: "Tumblr", icon: "📝", status: "manual", mode: "manual", platform: "Tumblr", blurb: "Add a Tumblr post manually.", note: "Automated sync coming soon" },
+  { key: "vimeo", name: "Vimeo", icon: "🎬", status: "manual", mode: "manual", platform: "Vimeo", blurb: "Add a Vimeo video manually.", note: "Automated sync coming soon" },
+  { key: "behance", name: "Behance", icon: "🅑", status: "manual", mode: "manual", platform: "Behance", blurb: "Add Behance feedback manually.", note: "Automated sync coming soon" },
+  { key: "yelp", name: "Yelp", icon: "🍴", status: "manual", mode: "manual", platform: "Yelp", blurb: "Add a Yelp review manually.", note: "Automated sync coming soon" },
+  { key: "flickr", name: "Flickr", icon: "📷", status: "manual", mode: "manual", platform: "Flickr", blurb: "Add Flickr proof manually.", note: "Automated sync coming soon" },
+  { key: "deviantart", name: "DeviantArt", icon: "🎨", status: "manual", mode: "manual", platform: "DeviantArt", blurb: "Add DeviantArt feedback manually.", note: "Automated sync coming soon" },
+];
+
 export const MARKETING_NAV = [
   { href: "/pricing", label: "Pricing" },
   { href: "/lifetime", label: "Lifetime deal" },
+  { href: "/sources", label: "Sources" },
   { href: "/demo", label: "Demo" },
-  { href: "/roadmap", label: "Roadmap" },
   { href: "/help", label: "Help" },
 ];
 
@@ -293,6 +355,7 @@ export const FOOTER_LINKS = {
   Product: [
     { href: "/pricing", label: "Pricing" },
     { href: "/lifetime", label: "Lifetime deal" },
+    { href: "/sources", label: "Proof sources" },
     { href: "/demo", label: "Demo" },
     { href: "/roadmap", label: "Roadmap" },
   ],

@@ -243,6 +243,20 @@ export async function setCardStatus(formData: FormData) {
   revalidatePath(`/app/walls/${wallId}`);
 }
 
+export async function setCardPinned(formData: FormData) {
+  await requireUser();
+  const supabase = await createClient();
+  const cardId = str(formData, "card_id");
+  const wallId = str(formData, "wall_id");
+  if (!cardId || !wallId) throw new Error("Missing fields");
+  const { error } = await supabase
+    .from("proof_cards")
+    .update({ is_pinned: bool(formData, "is_pinned") })
+    .eq("id", cardId);
+  if (error) throw new Error(error.message);
+  revalidatePath(`/app/walls/${wallId}`);
+}
+
 export async function deleteCard(formData: FormData) {
   await requireUser();
   const supabase = await createClient();

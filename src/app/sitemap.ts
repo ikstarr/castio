@@ -6,6 +6,7 @@ const STATIC_PATHS = [
   "",
   "/pricing",
   "/lifetime",
+  "/sources",
   "/demo",
   "/roadmap",
   "/help",

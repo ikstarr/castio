@@ -75,7 +75,71 @@ export interface ProofCard {
   tags: string[];
   status: CardStatus;
   sort_order: number;
+  is_pinned: boolean;
   click_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export type SourceType =
+  | "manual"
+  | "rss"
+  | "youtube"
+  | "instagram"
+  | "facebook"
+  | "x"
+  | "linkedin"
+  | "tiktok"
+  | "reddit"
+  | "google_reviews"
+  | "slack"
+  | "tumblr"
+  | "vimeo"
+  | "behance"
+  | "yelp"
+  | "flickr"
+  | "deviantart"
+  | "testimonial"
+  | "email"
+  | "screenshot"
+  | "ugc"
+  | "founder_update";
+
+export type SourceItemStatus = "pending" | "approved" | "hidden" | "archived";
+
+export interface Source {
+  id: string;
+  workspace_id: string;
+  type: SourceType;
+  name: string;
+  config: { feed_url?: string; channel_url?: string; default_tags?: string[] };
+  status: "active" | "paused";
+  last_sync_at: string | null;
+  last_error: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SourceItem {
+  id: string;
+  workspace_id: string;
+  source_id: string | null;
+  external_id: string | null;
+  proof_type: ProofType;
+  title: string | null;
+  content: string | null;
+  author_name: string | null;
+  author_handle: string | null;
+  company: string | null;
+  source_platform: string | null;
+  source_url: string | null;
+  media_url: string | null;
+  avatar_url: string | null;
+  tags: string[];
+  item_date: string | null;
+  status: SourceItemStatus;
+  wall_id: string | null;
+  published_card_id: string | null;
   created_at: string;
   updated_at: string;
 }
