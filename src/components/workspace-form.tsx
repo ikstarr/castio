@@ -41,7 +41,7 @@ export function CreateWorkspaceForm({
           </Button>
         </div>
         {state?.error ? (
-          <p className="mt-3 rounded-lg bg-[#fdecec] px-3 py-2 text-sm text-danger">
+          <p className="mt-3 rounded-lg bg-[#fdecec] px-3 py-2 text-sm text-danger break-words">
             {state.error}
           </p>
         ) : null}
@@ -62,7 +62,7 @@ export function CreateWorkspaceForm({
         />
       </Field>
       {state?.error ? (
-        <p className="rounded-lg bg-[#fdecec] px-3 py-2 text-sm text-danger">
+        <p className="rounded-lg bg-[#fdecec] px-3 py-2 text-sm text-danger break-words">
           {state.error}
         </p>
       ) : null}
