@@ -30,42 +30,6 @@ function rand(): string {
   return Math.random().toString(36).slice(2, 6);
 }
 
-/** Supabase project ref (the subdomain) — public info, not a secret. */
-function projectRef(): string {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-  return url.match(/https?:\/\/([^.]+)\./)?.[1] ?? "unknown";
-}
-
-/**
- * Build the user-facing workspace error. On non-production (preview/dev) it
- * appends the real Postgres error so we can pinpoint failures without log
- * access. Suppressed on production (VERCEL_ENV === "production").
- */
-function workspaceError(error: {
-  code?: string;
-  message?: string;
-  details?: string;
-  hint?: string;
-}): string {
-  const base =
-    error.code === "23503"
-      ? "Workspace could not be created — the plans reference data is missing. Run migration 0003 on this project, then try again."
-      : "Workspace could not be created. Please try again.";
-
-  if (process.env.VERCEL_ENV === "production") return base;
-
-  const diag = [
-    `project=${projectRef()}`,
-    `code=${error.code ?? "?"}`,
-    error.message ? `msg=${error.message}` : null,
-    error.details ? `details=${error.details}` : null,
-    error.hint ? `hint=${error.hint}` : null,
-  ]
-    .filter(Boolean)
-    .join(" · ");
-  return `${base}  ·  [preview diagnostic] ${diag}`;
-}
-
 // ---------------------------------------------------------------------------
 // Workspaces
 // ---------------------------------------------------------------------------
@@ -101,17 +65,14 @@ export async function createWorkspace(
       continue;
     }
 
-    // Surface the real cause in the server logs (Vercel function logs)…
+    // Log the real Postgres error server-side (safe — no secrets) for support.
     console.error("[createWorkspace] insert failed", {
-      project: projectRef(),
       code: error.code,
       message: error.message,
       details: error.details,
       hint: error.hint,
-      owner_id: user.id,
     });
-    // …and inline on preview/dev so it's visible without log access.
-    return { error: workspaceError(error) };
+    return { error: "Workspace could not be created. Please try again." };
   }
 
   if (!created) {
